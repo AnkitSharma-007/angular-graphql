@@ -1,0 +1,97 @@
+<h1 class="display-5">{{ title }} employee</h1>
+<hr />
+
+<div class="row">
+  <div class="col-md-6 mx-auto">
+    <div class="card">
+      <div class="card-body">
+        <form [formGroup]="employeeForm" (ngSubmit)="save()">
+          <div class="mb-3">
+            <label for="Name" class="form-label">Name</label>
+            <input type="text" class="form-control" formControlName="name" />
+            <span
+              class="text-danger"
+              *ngIf="
+              (employeeFormControl.name.touched || submitted) &&
+              employeeFormControl.name.errors?.['required']
+              "
+            >
+              Name is required.
+            </span>
+          </div>
+
+          <div class="mb-3">
+            <label for="Gender" class="form-label">Gender</label>
+            <select
+              class="form-control"
+              data-val="true"
+              formControlName="gender"
+            >
+              <option value="">-- Select Gender --</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <span
+              class="text-danger"
+              *ngIf="
+              (employeeFormControl.gender.touched || submitted) && 
+              employeeFormControl.gender.errors?.['required']"
+            >
+              Gender is required
+            </span>
+          </div>
+
+          <div class="mb-3">
+            <label for="Department" class="form-label">Department</label>
+            <input
+              class="form-control"
+              type="text"
+              formControlName="department"
+            />
+            <span
+              class="text-danger"
+              *ngIf="
+              (employeeFormControl.department.touched || submitted) &&
+              employeeFormControl.department.errors?.['required']
+              "
+            >
+              Department is required
+            </span>
+          </div>
+
+          <div class="mb-3">
+            <label for="City" class="form-label col-md-12">City</label>
+            <select class="form-control" data-val="true" formControlName="city">
+              <option value="">-- Select City --</option>
+              <option
+                *ngFor="let city of (cityList$ | async)?.cityList"
+                value="{{ city.cityName }}"
+              >
+                {{ city.cityName }}
+              </option>
+            </select>
+            <span
+              class="text-danger"
+              *ngIf="
+               (employeeFormControl.city.touched || submitted) &&
+               employeeFormControl.city.errors?.['required']
+               "
+            >
+              City is required
+            </span>
+          </div>
+          <div align="right">
+            <button type="submit" class="btn btn-primary me-2">Save</button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              (click)="navigateToFetchEmployee()"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<h1>Employee Data</h1>
+
+<p>This component demonstrates fetching Employee data from the server.</p>
+<div class="row">
+  <div class="col-7">
+    <button class="btn btn-primary" [routerLink]="['/employee/add']">
+      <span>
+        <i class="fa fa-user-plus" aria-hidden="true"></i>
+      </span>
+      Add employee
+    </button>
+  </div>
+  <div class="input-group col">
+    <input
+      type="search"
+      class="form-control"
+      placeholder="Search employee by name"
+      (keyup)="searchEmployee($event)"
+      (search)="searchEmployee($event)"
+    />
+  </div>
+</div>
+<ng-template #loading>
+  <p><em>Loading...</em></p>
+</ng-template>
+
+<div class="mt-4">
+  <ng-container *ngIf="employees$ | async as employeeData; else loading">
+    <ng-container *ngIf="employeeData.length > 0; else noData">
+      <table class="table shadow table-striped align-middle table-bordered">
+        <thead class="table-success">
+          <tr class="text-center">
+            <th>EmployeeId</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Department</th>
+            <th>City</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="text-center" *ngFor="let employee of employeeData">
+            <td>{{ employee.employeeId }}</td>
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.gender }}</td>
+            <td>{{ employee.department }}</td>
+            <td>{{ employee.city }}</td>
+            <td>
+              <button
+                class="btn btn-outline-dark"
+                [routerLink]="['/employee/edit/', employee.employeeId]"
+              >
+                <span><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                Edit
+              </button>
+              <button
+                class="btn btn-outline-danger ms-2"
+                (click)="delete(employee.employeeId)"
+              >
+                <span><i class="fa fa-trash" aria-hidden="true"></i></span>
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+    <ng-template #noData>
+      <div class="d-flex justify-content-center">
+        <h4>No records found</h4>
+      </div>
+    </ng-template>
+  </ng-container>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { DeleteEmployeeService } from 'src/app/services/delete-employee.service';
@@ -9,7 +9,7 @@ import { EmployeeHelperService } from 'src/app/services/employee-helper.service'
   templateUrl: './fetch-employee.component.html',
   styleUrls: ['./fetch-employee.component.css'],
 })
-export class FetchEmployeeComponent implements OnInit {
+export class FetchEmployeeComponent implements OnInit, OnDestroy {
   protected employees$ = this.employeeHelperService.employee;
   private destroyed$ = new ReplaySubject<void>(1);
 
@@ -50,5 +50,10 @@ export class FetchEmployeeComponent implements OnInit {
         )
         .subscribe();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 }
